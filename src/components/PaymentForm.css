@@ -15,3 +15,11 @@
   background-color: coral;
   width: 18rem;
 }
+
+.expires-on-label {
+  margin-bottom: 0;
+}
+
+.cvc-label {
+  display: block;
+}

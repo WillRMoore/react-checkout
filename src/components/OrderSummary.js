@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import "./OrderSummary.css";
+import OrderItem from "./OrderItem";
+import Subtotal from "./Subtotal";
+import Tax from "./Tax";
+import Discount from "./Discount";
+import Total from "./Total";
 
 class OrderSummary extends Component {
   render() {
     return (
       <div className="order-summary">
         <h2>Order Summary</h2>
-        <div></div>
-        <div>Discount</div>
-        <div>Subtotal</div>
-        <div>Tax</div>
-        <div>Total</div>
+        <Subtotal />
+        <Tax />
+        <Discount />
+        <Total />
       </div>
     );
   }

@@ -29,3 +29,35 @@
   font-weight: 500;
   font-size: 80%;
 }
+
+.payment-form input[type="submit"] {
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+
+  height: 2.8rem;
+  background-color: rgb(0, 110, 255);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 110%;
+  cursor: pointer;
+}
+
+.payment-form input[type="submit"]:hover {
+  background-color: rgb(0, 132, 255);
+}
+
+input[type="submit"][name="discount-button"] {
+  height: 2.8rem;
+  background-color: coral;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 110%;
+}
+input[type="submit"][name="discount-button"]:hover {
+  background-color: rgba(255, 127, 80, 0.9);
+}

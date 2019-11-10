@@ -1,0 +1,7 @@
+.coupon h2 {
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  text-align: start;
+
+  margin-bottom: 0.5rem;
+}
