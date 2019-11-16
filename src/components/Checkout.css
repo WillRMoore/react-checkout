@@ -16,5 +16,7 @@
   flex-wrap: wrap;
 
   max-width: 20rem;
-  background-color: rgb(0, 102, 255);
+  background-color: rgb(233, 233, 233);
+  padding-left: 1rem;
+  padding-right: 1rem;
 }

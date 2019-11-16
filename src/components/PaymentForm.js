@@ -22,7 +22,7 @@ class PaymentForm extends Component {
           />
 
           <div className="expires-input">
-            <div>
+            <div className="expires-input-section1">
               <p className="expires-on-label">EXIRES ON</p>
               <select>
                 <option value="01">01</option>
@@ -53,7 +53,7 @@ class PaymentForm extends Component {
                 <option value="2030">2030</option>
               </select>
             </div>
-            <div>
+            <div className="expires-input-section2">
               <label className="cvc-label" for="cvc">
                 CVC
               </label>

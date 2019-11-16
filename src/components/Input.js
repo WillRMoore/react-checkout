@@ -11,6 +11,7 @@ class Input extends Component {
           name={this.props.name}
           placeholder={this.props.placeholder}
           value={this.props.value}
+          id={this.props.id}
         />
       </div>
     );

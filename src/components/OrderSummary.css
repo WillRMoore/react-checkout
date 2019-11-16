@@ -13,5 +13,8 @@
   flex-wrap: wrap;
 
   width: 18rem;
-  background-color: rgb(92, 182, 92);
+}
+
+.order-summary-title {
+  margin-bottom: 0;
 }

@@ -1,31 +1,56 @@
 import React, { Component } from "react";
 import "./Tax.css";
+import { connect } from "react-redux";
+import { calculateTax } from "../actions/postActions";
 
 class Tax extends Component {
   componentDidMount() {
     console.log("Tax.js Mounted");
   }
 
-  calculateTaxes = (taxRate, subtotal) => {
-    var tax = (subtotal * taxRate).toFixed(2);
+  componentWillReceiveProps(stateChanged) {
+    // if (stateChanged.subTotal) {
+    //   console.log("subTotal updated in Tax component");
+    //   this.props.calculateTax({
+    //     taxRate: this.props.taxRate,
+    //     subTotal: stateChanged.subTotal
+    //   });
+    // }
+    // else if (stateChanged.cartItems) {
+    //   console.log("cartItems updated in Tax component");
+    //   this.props.calculateTax({
+    //     taxRate: this.props.taxRate,
+    //     subTotal: this.props.subTotal
+    //   });
+    // }
+  }
 
-    // update subtotal
-    var subTotal = Number(subtotal) + Number(tax);
+  // calculateTaxes = (taxRate, subtotal) => {
+  //   var tax = (subtotal * taxRate).toFixed(2);
 
-    console.log("tax:", tax);
-    console.log("Updated subtotal:", subTotal);
-    return tax;
-  };
+  //   // update subtotal
+  //   var subTotal = Number(subtotal) + Number(tax);
+
+  //   console.log("tax:", tax);
+  //   console.log("Updated subtotal:", subTotal);
+  //   return tax;
+  // };
 
   render() {
-    var tax = this.calculateTaxes(0.07, 335);
     return (
       <div className="tax">
         <p>Tax</p>
-        <p>${tax}</p>
+        <p>${this.props.tax}</p>
       </div>
     );
   }
 }
 
-export default Tax;
+const mapStateToProps = state => ({
+  tax: state.store.tax,
+  taxRate: state.store.taxRate,
+  subTotal: state.store.subTotal,
+  cartItems: state.store.cartItems
+});
+
+export default connect(mapStateToProps, { calculateTax })(Tax);

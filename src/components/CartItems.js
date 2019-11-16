@@ -1,70 +1,91 @@
 import React, { Component } from "react";
 import "./CartItems.css";
+import { connect } from "react-redux";
+import {
+  calculateSubtotal,
+  removeCartItem,
+  recalculateDiscount,
+  calculateTax,
+  calculateTotal,
+  incrementQuantity
+} from "../actions/postActions";
 
 class CartItems extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cartItems: [
-        { name: "Shirt", quantity: 1, price: 30, id: 1 },
-        { name: "Jeans", quantity: 1, price: 50, id: 2 },
-        { name: "Jacket", quantity: 1, price: 350, id: 3 },
-        { name: "Watch", quantity: 1, price: 60, id: 4 }
-      ]
+      cartItems: this.props.cartItems
     };
   }
 
-  removeItem = id => {
-    var product = this.state.cartItems;
+  componentDidMount() {
+    console.log("CartItems mounted");
+  }
 
-    for (var i = 0; i < product.length; i++) {
-      if (product[i].id == id) {
-        product.splice(i, 1);
-        console.log("product Item:", product[i]);
-      }
+  componentWillReceiveProps(stateChanged) {
+    if (stateChanged.cartItems) {
+      console.log("cartItems changed in CartItems.js Component");
+      this.props.calculateSubtotal({ cartItems: stateChanged.cartItems });
     }
-    this.setState({ cartItems: product });
+    if (stateChanged.subTotal) {
+      // && this.props.discount.amount !== 0
+      console.log("subTotal state updated in CartItems.js component");
 
-    console.log("item removed from cart:", id);
-    console.log("product:", product);
-  };
+      this.props.calculateTotal({
+        subTotal: stateChanged.subTotal,
+        tax: this.props.tax,
+        discount: this.props.discount
+      });
 
-  incrementQuantity = product => {
-    var productItem = document.querySelector("#quantity" + product.id);
+      this.props.calculateTax({
+        taxRate: this.props.taxRate,
+        subTotal: stateChanged.subTotal
+      });
+    }
+  }
+
+  incrementQuantity = ({ id }) => {
+    var productItem = document.querySelector("#quantity" + id);
     var newQuantity = Number(productItem.value) + 1;
-    var products = this.state.cartItems;
+    var products = this.props.cartItems;
 
     productItem.value = newQuantity;
 
     for (var i = 0; i < products.length; i++) {
-      if (products[i].id == product.id) {
+      if (products[i].id == id) {
         products[i].quantity = newQuantity;
       }
     }
-    this.setState({ cartItems: products });
+
+    // update redux store
+    this.props.incrementQuantity({ cartItems: products });
+    this.props.calculateSubtotal({ cartItems: products });
 
     console.log("quantity incremented to ", newQuantity);
     console.log("productItem ", productItem);
     console.log("products ", products);
   };
 
-  decrementQuantity = product => {
-    var productItem = document.querySelector("#quantity" + product.id);
+  decrementQuantity = ({ id, quantity }) => {
+    var productItem = document.querySelector("#quantity" + id);
     if (Number(productItem.value) > 1) {
       var newQuantity = Number(productItem.value) - 1;
     } else {
-      var newQuantity = product.quantity;
+      var newQuantity = quantity;
     }
     var products = this.state.cartItems;
 
     productItem.value = newQuantity;
 
     for (var i = 0; i < products.length; i++) {
-      if (products[i].id == product.id) {
+      if (products[i].id == id) {
         products[i].quantity = newQuantity;
       }
     }
-    this.setState({ cartItems: products });
+
+    // update redux store
+    this.props.incrementQuantity({ cartItems: products });
+    this.props.calculateSubtotal({ cartItems: products });
 
     console.log("quantity decremented to ", newQuantity);
     console.log("productItem ", productItem);
@@ -73,7 +94,7 @@ class CartItems extends Component {
   render() {
     return (
       <div className="cart-items">
-        {this.state.cartItems.map(item => (
+        {this.props.cartItems.map(item => (
           <div className="cart-item" key={item.id}>
             <p>{item.name}</p>
             <p>Price: ${item.price}</p>
@@ -89,8 +110,7 @@ class CartItems extends Component {
                 <button
                   onClick={() =>
                     this.incrementQuantity({
-                      id: item.id,
-                      quantity: item.quantity
+                      id: item.id
                     })
                   }
                   className="quantity-button"
@@ -111,7 +131,12 @@ class CartItems extends Component {
               </div>
             </div>
             <p
-              onClick={() => this.removeItem(item.id)}
+              onClick={() =>
+                this.props.removeCartItem({
+                  cartItems: this.props.cartItems,
+                  id: item.id
+                })
+              }
               className="remove-item-button"
             >
               Remove
@@ -123,4 +148,20 @@ class CartItems extends Component {
   }
 }
 
-export default CartItems;
+const mapStateToProps = state => ({
+  cartItems: state.store.cartItems,
+  removedCartItem: state.store.removedCartItem,
+  discount: state.store.discount,
+  subTotal: state.store.subTotal,
+  taxRate: state.store.taxRate,
+  tax: state.store.tax
+});
+
+export default connect(mapStateToProps, {
+  removeCartItem,
+  calculateSubtotal,
+  recalculateDiscount,
+  calculateTax,
+  calculateTotal,
+  incrementQuantity
+})(CartItems);

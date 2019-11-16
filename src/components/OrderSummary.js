@@ -10,7 +10,7 @@ class OrderSummary extends Component {
   render() {
     return (
       <div className="order-summary">
-        <h2>Order Summary</h2>
+        <h2 className="order-summary-title">Order Summary</h2>
         <Subtotal />
         <Tax />
         <Discount />
